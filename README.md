@@ -1,4 +1,4 @@
-# Catalog Item
+# Item Catalog
 Completed for [Udacity's Full Stack Web Developer Nanodegree program](https://www.udacity.com/course/full-stack-web-developer-nanodegree--nd004).
 
 ## Project Overview
