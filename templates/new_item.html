@@ -1,0 +1,73 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+		<main class="container content">
+			<div class="row mt-3">
+				<div class="col-md-12">
+					{% with errors = get_flashed_messages(category_filter=["error"]) %}
+					{% if errors %}
+					<div class="alert alert-warning fade show">
+					<ul>
+						{%- for msg in errors %}
+						<li>{{ msg }}</li>
+						{% endfor -%}
+					</ul>
+					</div>
+					{% endif %}
+					{% endwith %}
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col"></div>
+				<div class="col-md-8">
+					<h1>New Homework Item</h1>
+				</div>
+				<div class="col"></div>
+			</div>
+			<div class="row">
+				<div class="col"></div>
+				<div class="col-md-8">
+					<form action="#" method = "post">
+						<div class="form-group">
+							<label for="name">Name:</label>
+							<input type ="text" maxlength="50" class="form-control" name="name"placeholder="Name of the task item">
+		
+							<label for="description" class="mt-2">Description:</label>
+							<textarea class="form-control" maxlength="250" rows="3" name="description" placeholder="Description of the task item"></textarea>
+		
+							<label for="time_estimate" class="mt-2">Time Estimate:</label>
+							<div class="input-group">
+								<div class="input-group-addon"></div>
+								<input type ="text" class="form-control" maxlength="20" name="time_estimate" placeholder="e.g. 20 min">
+							</div>
+							<label for="priority" class="mt-2">Priority:</label>
+							<div class="radio">
+								<label>
+									<input type="radio" name="priority" id="priority1" value="High" checked> High
+								</label>
+							</div>
+							<div class="radio">
+								<label>
+									<input type="radio" name="priority" id="priority2" value="Medium"> Medium
+								</label>
+							</div>
+							<div class="radio">
+								<label>
+									<input type="radio" name="priority" id="priority3" value="Low"> Low
+								</label>
+							</div>
+							<button type="submit" class="btn btn-outline-primary btn-sm mt-2" id="submit" type="submit"> Create
+							</button>
+							<a href = "{{url_for('showSubjects')}}">
+								<button class="btn btn-outline-secondary btn-sm mt-2" type="button"> Cancel</button>
+							</a>
+						</div>
+					</form>
+				</div>
+				<div class="col"></div>
+			</div>
+		</main>
+
+{% endblock %}
+

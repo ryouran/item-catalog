@@ -1,0 +1,33 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+		<main class="container content">
+			<div class="row">
+				<div class="col-md-3"></div>
+				<div class="col-md-6">
+					<h1>Edit {{subject.name}}</h1>
+				</div>
+				<div class="col-md-3"></div>
+			</div>
+			<div class="row mt-5">
+				<div class="col-md-3"></div>
+				<div class="col-md-6">
+					<form action="{{ url_for('editSubject', subject_id=subject.id)}}" method = "post">
+						<div class="form-group">
+							<div class="form-row mt-3">
+								<label for="name">Name:</label>
+								<input type ="text" class="form-control" name="name" value="{{subject.name }}">
+							</div>
+							<div class="form-row mt-3">
+								<button type="submit" class="btn btn-outline-primary btn-sm" id="submit" type="submit">Save</button>
+								<a href = "{{url_for('showSubjects')}}">
+									<button class="btn btn-outline-secondary btn-sm" type="button">Cancel</button>
+							</a>
+						</div>
+						</div>
+					</form>
+				</div>
+				<div class="col-md-3"></div>
+			</div>
+		</main>
+{% endblock %}

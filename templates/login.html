@@ -1,0 +1,181 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Homework Tracker</title>
+    <meta name="google-signin-client_id" content={{client_id}}>
+    
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+
+    <script>
+      function renderButton() {
+        gapi.signin2.render('signinButton', {
+          'scope': 'profile email',
+          'width': 235,
+          'height': 40,
+          'longtitle': true,
+          'theme': 'dark'});
+      }     
+    </script>
+
+  </head>
+
+  <body>
+
+    <div id="fb-root"></div>
+    <script> 
+      (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.12&appId=149361962441753&autoLogAppEvents=1';
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+    </script>
+
+        <div class="container" style="margin-top: 100px;">
+            <div class="row">
+                <div class="col"></div>
+                <div class="col-md-8" id="result"></div>  
+                <div class="col"></div>
+            </div>
+        </div>
+
+        <div class="container" id="login-buttons">
+            <div class="row justify-content-center">
+                <h1>Homework Tracker</h1>
+            </div>
+
+            <div class="row justify-content-center" style="height: 60px;">
+                <div class="col"></div>
+                <div class="col-md-4" style="width:250px;">
+                    <div id="signinButton" class="g-signin2"></div>
+                    <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+                </div>
+                <div class="col"></div>
+            </div>
+
+            <div class="row justify-content-center" style="height: 60px; ">
+                <div class="col"></div>
+                <div class="col-md-4" style="width:250px;">
+                    <div class="fb-login-button" 
+                    data-max-rows="1" 
+                    data-size="large" 
+                    data-button-type="login_with" 
+                    data-show-faces="false" 
+                    data-auto-logout-link="false" 
+                    data-use-continue-as="false"
+                    onlogin="sendTokenToServer()"
+                    scope="public_profile,email">
+                    </div>
+                </div>
+                <div class="col"></div>
+            </div>
+
+        </div>
+   </div>
+     
+    <script>
+      $('#signinButton').click(function() {
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.grantOfflineAccess().then(signInCallback);
+      });
+    </script>
+        
+    <script>
+      function signInCallback(authResult){
+        console.log(authResult['code']);
+        console.log(authResult['error'])
+        if (authResult['code']){
+          // Hide the login buttons
+          document.getElementById('login-buttons').style.display = 'none';
+
+          // Send the one-time-use code to the server, if the server responds, write a 'login successful' message to
+          // the web page and then redirect back to the main subject page
+          $.ajax({
+            type: 'POST',
+            url: '/gconnect?state={{STATE}}',
+            processData: false,
+            contentType: 'application/octet-stream; charset=utf-8',
+            data: authResult['code'],
+            success: function(result) {
+              if(result) {
+                $('#result').html('<h3>Login Successful!</h3></br>' + result + '</br></br>Redirecting...');
+                setTimeout(function() {
+                  window.location.href = "/subject";
+                }, 4000);
+              } else if (authResult['error']){
+                console.log('There was an error: ' + authResult['error']);
+              } else {
+                $('#result').html('Failed to make a server-side call.  Check your configuration and console');
+              }
+            }
+          })
+        }
+      }
+    </script>
+
+    <!-- Facebook sign in -->
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '149361962441753',
+          cookie     : true,
+          xfbml      : true,
+          version    : 'v2.12'
+        });
+    
+        FB.AppEvents.logPageView();        
+      };
+    
+      (function(d, s, id){
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) {return;}
+          js = d.createElement(s); js.id = id;
+          js.src = "https://connect.facebook.net/en_US/sdk.js";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+          
+    <script>
+      function sendTokenToServer() {
+        var access_token = FB.getAuthResponse()['accessToken'];
+        console.log('Welcome! Fetching authcode');
+        console.log(access_token);
+        FB.api('/me', function(response){
+          console.log('Successful login for: ' + response.name);
+          // Hide the login buttons
+          document.getElementById('login-buttons').style.display = 'none';
+          $.ajax({
+            type: 'POST',
+            url: '/fbconnect?state={{STATE}}',
+            processData: false,
+            data: access_token,
+            contentType: 'application/octet-stream; charset=utf8',
+            success: function(result) {
+              if(result) {
+                $('#result').html('<h3>Login Successful!</h3></br>' + result + '</br></br>Redirecting...');
+                setTimeout(function() {
+                  window.location.href = "/subject";
+                }, 4000);
+              } else {
+                $('#result').html('Failed to make a server-side call.  Check your configuration and console');
+              }
+            }
+      
+          })
+        });
+      }
+    </script>
+
+  </body>
+</html>
+    

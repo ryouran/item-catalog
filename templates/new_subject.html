@@ -1,0 +1,48 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+		<main class="container content">
+			<div class="row mt-3">
+				<div class="col-md-12">
+					{% with errors = get_flashed_messages(category_filter=["error"]) %}
+					{% if errors %}
+					<div class="alert alert-warning fade show">
+					<ul>
+						{%- for msg in errors %}
+						<li>{{ msg }}</li>
+						{% endfor -%}
+					</ul>
+					</div>
+					{% endif %}
+					{% endwith %}
+				</div>
+			</div>
+			<div class="row mt-3">
+				<div class="col-md-3"></div>
+				<div class="col-md-6">
+					<h1>New Subject</h1>
+				</div>
+				<div class="col-md-3"></div>
+			</div>
+			<div class="row mt-3">
+				<div class="col-md-3"></div>
+				<div class="col-md-6">
+					<form action="#" method = "post">
+						<div class="form-group">
+							<div class="form-row mt-3">
+								<label class="" for="name">Name:</label>
+								<input type ="text" class="form-control" maxlength="100" name="name">
+							</div>
+							<div class="form-row mt-3">
+								<button type="submit" class="btn btn-outline-primary btn-sm" id="submit" type="submit">Create</button>
+								<a href = "{{url_for('showSubjects')}}">
+									<button class="btn btn-outline-secondary btn-sm" type="button">Cancel</button>
+								</a>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="col-md-3"></div>
+			</div>
+		</main>
+{% endblock %}

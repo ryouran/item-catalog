@@ -1,0 +1,41 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+		<main class="container content content-bg">
+			<div class="container">
+				<div class="row mx-1">
+					<div class="col-md-12">
+					{% with messages = get_flashed_messages() %}
+						{% if messages %}		
+						{% for message in messages %}
+							<div class="alert alert-success" role="alert"> <strong><p> {{ message }} </p></strong> </li>
+						{% endfor %}
+						{% endif %}
+					{% endwith %}  
+					</div>
+				</div>
+			</div>
+
+			<div class="container">
+				<div class="row mt-3 mx-auto justify-content-start">	
+					{% for subject in subjects %}			
+					<div class="col col-md-4 mt-3">
+						<div class="card border-dark text-center mx-auto">	
+							<div class="card-header">{{subject[1].name}}</div>
+							<div class="card-body">
+								<div class="card-title">
+								<a href = "{{url_for('showItems', subject_id = subject[0].id)}}">{{subject[0].name}}</a>
+								</div>
+							</div>
+							<div class="card-footer">
+								<p class="card-text"><small class="text-muted">Updated: {{subject[2]}}</small></p>								
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+		</main>
+{% endblock %}
+
+

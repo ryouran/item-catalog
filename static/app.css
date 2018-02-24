@@ -1,0 +1,225 @@
+* {
+    font-family: 'Poppins', sans-serif;   
+    font-weight: 700;
+}
+
+header {
+    top: 100;
+}
+
+h1 {
+	font-size: 50px;
+	color: #51453b;
+	line-height: 60px;
+	font-weight: 300;
+}
+
+h2 {
+	font-size: 24px;
+	color: #6693a5;
+	line-height: 29px;
+}
+
+h3 {
+	font-size: 18px;
+	color: #4a4a4a;
+	line-height: 23px;
+}
+
+p {
+ 	font-size: 16px;
+ 	color: #7b7573;
+ 	line-height: 24px;
+ 	font-weight: 400;
+}
+
+a:link {
+    color:#7b7573;
+    text-decoration: none;
+}
+
+a:visited {
+    color: #395d69;
+    text-decoration: none;
+}
+
+a:hover, active {
+    color: #9ad3de;
+    text-decoration: none;
+}
+
+.item a {
+    color: #395d69;
+    text-decoration: none;
+}
+
+strong {
+ 	font-size: 16px;
+ 	color: #7b7573;
+ 	line-height: 24px;
+ }
+
+.btn {
+    padding: 7px;
+    margin-right: 5px;
+    border-width: 2px;
+    transition: 0.3s;
+    border-radius: 5px;
+    border-style: solid;
+    min-width: 100px;
+}
+
+.btn-outline-primary {
+	border-color: #9fb80a;
+	color: #9fb80a;
+}
+
+.btn-outline-primary:hover {
+    color: #fff;
+    background-color: #9fb80a;
+}
+
+.bg-light-blue {
+    background: #bedde2;
+}
+
+.alert {
+	margin-bottom: 1px;
+	height: 30px;
+	line-height:30px;
+	padding:0px 15px;
+}
+
+.item {
+	background: #f0f0f0;
+	padding: 20px;
+	margin: 20px;
+	margin-left: -20px;
+	width: 100%;
+	overflow-wrap: break-word;
+}
+
+.content {
+	padding-top: 120px;
+	padding-bottom: 50px;
+	min-height: 100vh;
+}
+
+.content-bg {
+	background: #fafafa;
+}
+
+.footer {
+	background: #999392;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	text-align: center;
+	min-height: 100px;
+	padding-top: 10px;
+}
+
+.footer p {
+	color: #e3e3e3;
+}
+
+.user img {
+	height: 40px;
+	width: 40px;
+	border-radius: 50%;
+}
+
+.card {
+	min-width: 200px;
+	min-height: 150px;
+}
+
+.card a {
+	font-size: 24px;
+}
+
+@media (max-width: 370.98px) { 
+	.content {
+		padding-top: 170px;
+	}
+}
+
+/* Extra small devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) { 
+	h1 {
+		font-size: 18px;
+	}
+
+	h2 {
+		font-size: 16px;
+	}
+
+	h3 {
+		font-size: 14px;
+	}
+
+	p, 
+	a {
+		font-size: 12px;
+	}
+
+	.user img {
+		height: 20px;
+		width: 20px;
+	}
+
+	.card a {
+		font-size: 16px;
+	}
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+	h1 {
+		font-size: 24px;
+	}
+
+	h2 {
+		font-size: 20px;
+	}
+
+	h3 {
+		font-size: 16px;
+	}
+
+	.user img {
+		height: 20px;
+		width: 20px;
+	}
+
+	.card a {
+		font-size: 20px;
+	}
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 991.98px) { 
+	h1 {
+		font-size: 28px;
+	}
+	
+	h2 {
+		font-size: 20px;
+	}
+
+	h3 {
+		font-size: 18px;
+	}
+
+	p, 
+	a {
+		font-size: 14px;
+	}
+
+	.card a {
+		font-size: 20px;
+	}
+}
+
+
+
