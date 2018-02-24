@@ -57,10 +57,10 @@ Press `Ctrl-D` to log out of the VM and type `vagrant halt` to shut it down.
 
 
 ### JSON Endpoints
-Catalog JSON: /subject/JSON - Show all subjects
+Catalog JSON: `/subject/JSON` - Show all subjects
 
-Category JSON: /subject/<int:subject_id>/item/JSON - Show items for a specific category
+Category JSON: `/subject/<int:subject_id>/item/JSON` - Show items for a specific category
 
-Item JSON: /subject/<int:subject_id>/item/<int:item_id>/JSON - Show a specific item
+Item JSON: `/subject/<int:subject_id>/item/<int:item_id>/JSON` - Show a specific item
 
 
