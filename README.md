@@ -1,4 +1,4 @@
-#Catalog Item
+# Catalog Item
 Completed for [Udacity's Full Stack Web Developer Nanodegree program](https://www.udacity.com/course/full-stack-web-developer-nanodegree--nd004).
 
 ## Project Overview
@@ -56,7 +56,7 @@ For Facebook, go to [Facebook Login](https://developers.facebook.com/products/lo
 Press `Ctrl-D` to log out of the VM and type `vagrant halt` to shut it down.
 
 
-###JSON Endpoints
+### JSON Endpoints
 Catalog JSON: /subject/JSON - Show all subjects
 
 Category JSON: /subject/<int:subject_id>/item/JSON - Show items for a specific category

@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 
-"""Catalog Item Project.
-This module gets data from database and print out formatted results.
+"""Item Catalog Project
+This module does the following:
+initialize the app, connect to the database, manage user login and
+logout, handle routing, process data for web page views for CRUD
+operations, and provide JSON endpoints
 """
 
 import random

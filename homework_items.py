@@ -86,44 +86,4 @@ item1 = Item(user_id=1, name="Group project", description="Review assignment she
 session.add(item1)
 session.commit()
 
-
-# Homework items for Literature
-# subject2 = Subject(user_id=1, name="Literature")
-
-# session.add(subject2)
-# session.commit()
-
-# session.add(item2)
-# session.commit()
-
-# item1 = Item(user_id=1, name="Presentation", description="20 minutes presentation",
-#                      time_estimate="1 hour", priority="High", subject=subject2)
-
-# session.add(item1)
-# session.commit()
-
-# item2 = Item(user_id=1, name="Presentation", description="20 minutes presentation",
-#                      time_estimate="1 hour", priority="High", subject=subject2)
-
-# session.add(item2)
-# session.commit()
-
-# Homework items for Chinese
-# subject3 = Subject(user_id=1, name="Chinese")
-
-# session.add(subject3)
-# session.commit()
-
-# item1 = Item(user_id=1, name="Presentation", description="20 minutes presentation",
-#                      time_estimate="1 hour", priority="High", subject=subject3)
-
-# session.add(item1)
-# session.commit()
-
-# item2 = Item(user_id=1, name="Presentation", description="20 minutes presentation",
-#                      time_estimate="1 hour", priority="High", subject=subject3)
-
-# session.add(item2)
-# session.commit()
-
 print "added homework items!"
