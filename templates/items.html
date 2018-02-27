@@ -3,18 +3,31 @@
 {% include "header.html" %}
 
 <main class="container content">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				{% with errors = get_flashed_messages(category_filter=["error"]) %}
+					{% if errors %}
+					<div class="alert alert-warning fade show">
+					<ul>
+						{%- for msg in errors %}
+						<li>{{ msg }}</li>
+						{% endfor -%}
+					</ul>
+					</div>
+					{% endif %}
+				{% endwith %}
 
-	<div class="row">
-		<div class="col-md-12">
-		{% with messages = get_flashed_messages() %}
-			{% if messages %}		
-			{% for message in messages %}
-				<div class="alert alert-success" role="alert"> <strong> {{ message }} </strong> </li></div>
-			{% endfor %}
-			{% endif %}
-		{% endwith %}  
+				{% with messages = get_flashed_messages(category_filter=["success"]) %}
+					{% if messages %}		
+					{% for message in messages %}
+						<div class="alert alert-success" role="alert"> <strong><p> {{ message }} </p></strong></li>
+					{% endfor %}
+					{% endif %}
+				{% endwith %}  
+			</div>
 		</div>
-	</div>
+ 	</div>
 
 	<div class="row mt-2">
 		<div class="col-md-12">

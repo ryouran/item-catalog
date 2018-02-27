@@ -1,10 +1,7 @@
 #!/usr/bin/env python
 
-"""Item Catalog Project
-This module does the following:
-initialize the app, connect to the database, manage user login and
-logout, handle routing, process data for web page views for CRUD
-operations, and provide JSON endpoints
+"""Catalog Item Project.
+This module gets data from database and print out formatted results.
 """
 
 import random
@@ -202,7 +199,7 @@ def gconnect():
     output += '<img src="'
     output += login_session['picture']
     output += '" style="width: 200px; height: 200px; border-radius: 50%;">'
-    flash("You are now logged in as %s" % login_session['username'])
+    flash('You are now logged in as %s' % login_session['username'], 'success')
     return output
 
 
@@ -223,7 +220,7 @@ def disconnect():
         del login_session['provider']
         del login_session['access_token']
 
-        flash('You have successfully been logged out.')
+        flash('You have successfully been logged out.', 'success')
         return redirect(url_for('showSubjects'))
 
 
@@ -316,7 +313,7 @@ def fbconnect():
     output += '<img src="'
     output += login_session['picture']
     output += '" style="width: 200px; height: 200px; border-radius: 50%;">'
-    flash("You are now logged in as %s" % login_session['username'])
+    flash('You are now logged in as %s' % login_session['username'], 'success')
     return output
 
 
@@ -386,23 +383,23 @@ def newSubject():
 
         # Subject name cannot be empty
         if request.form['name'] == "":
-            print("subject name is empty")
             flash('Please enter a subject name.', 'error')
             return render_template('new_subject.html', picture=picture)
         # Check if subject name already exists with this user
         subjectName = getSubjectName(
             request.form['name'], login_session['user_id'])
         if subjectName == request.form['name']:
-            print("subject name already exists")
             flash(
-                "%s already exists. Please enter a different subject name."
+                '%s already exists. Please enter a different subject name.'
                 % request.form['name'], 'error')
             return redirect('/subject/new/', picture=picture)
         else:
             newSubject = Subject(
                 name=request.form['name'], user_id=login_session['user_id'])
             session.add(newSubject)
-            flash('New subject \'%s\' successfully created!' % newSubject.name)
+            flash(
+                'New subject \'%s\' successfully created!' % newSubject.name,
+                'success')
             session.commit()
             return redirect(url_for('showSubjects'))
     else:
@@ -416,11 +413,22 @@ def editSubject(subject_id):
     """
     if 'username' not in login_session:
         return redirect('/login')
-    editedSubject = session.query(Subject).filter_by(id=subject_id).one()
+
+    try:
+        editedSubject = session.query(Subject).filter_by(id=subject_id).one()
+    except:
+        flash('No such subject is found.', 'error')
+        return redirect(url_for('showSubjects'))
+
+    if login_session['user_id'] != editedSubject.user_id:
+        session.close()
+        flash('You are not authorized to edit this subject.', 'error')
+        return redirect(url_for('showSubjects'))
     if request.method == 'POST':
         if request.form['name']:
             editedSubject.name = request.form['name']
-            flash('\'%s\' successfully edited ' % editedSubject.name)
+            flash(
+                '\'%s\' successfully edited ' % editedSubject.name, 'success')
             return redirect(url_for('showSubjects'))
     else:
         picture = login_session['picture']
@@ -433,12 +441,25 @@ def deleteSubject(subject_id):
     """
     Delete a subject
     """
-    subjectToDelete = session.query(Subject).filter_by(id=subject_id).one()
     if 'username' not in login_session:
         return redirect('/login')
+
+    try:
+        subjectToDelete = session.query(Subject).filter_by(id=subject_id).one()
+    except:
+        flash('No such subject is found.', 'error')
+        return redirect(url_for('showSubjects'))
+
+    if subjectToDelete.user_id != login_session['user_id']:
+        session.close()
+        flash('You are not authorized to delete this subject.', 'error')
+        return redirect(url_for('showSubjects'))
+
     if request.method == 'POST':
         session.delete(subjectToDelete)
-        flash('\'%s\' successfully deleted' % subjectToDelete.name)
+        flash(
+            '\'%s\' successfully deleted' % subjectToDelete.name,
+            'success')
         session.commit()
         return redirect(url_for('showSubjects', subject_id=subject_id))
     else:
@@ -480,11 +501,20 @@ def newItem(subject_id):
     """
     if 'username' not in login_session:
         return redirect('/login')
-    subject = session.query(Subject).filter_by(id=subject_id).one()
+    try:
+        subject = session.query(Subject).filter_by(id=subject_id).one()
+    except:
+        flash('No such subject is found.', 'error')
+        return redirect(url_for('showSubjects'))
+
+    if login_session['user_id'] != subject.user_id:
+        flash(
+            'You are not authorized to create a new item for this subject!',
+            'error')
+        return redirect(url_for('showItems', subject_id=subject_id))
     if request.method == 'POST':
         if request.form['name'] == "":
-            print("Item name is empty.")
-            flash("Please enter an item name.", 'error')
+            flash('Please enter an item name.', 'error')
             return redirect(url_for('newItem', subject_id=subject_id))
         newItem = Item(
             name=request.form['name'], description=request.form['description'],
@@ -493,7 +523,7 @@ def newItem(subject_id):
             user_id=subject.user_id)
         session.add(newItem)
         session.commit()
-        flash('\'%s\' successfully created' % (newItem.name))
+        flash('\'%s\' successfully created' % (newItem.name), 'success')
         return redirect(url_for('showItems', subject_id=subject_id))
     else:
         picture = login_session['picture']
@@ -510,8 +540,18 @@ def editItem(subject_id, item_id):
     """
     if 'username' not in login_session:
         return redirect('/login')
+
+    try:
+        subject = session.query(Subject).filter_by(id=subject_id).one()
+    except:
+        flash('No such subject is found.', 'error')
+        return redirect(url_for('showSubjects'))
+
+    if login_session['user_id'] != subject.user_id:
+        flash('You are not authorized to edit items of this subject.', 'error')
+        return redirect(url_for('showItems', subject_id=subject_id))
+
     editedItem = session.query(Item).filter_by(id=item_id).one()
-    subject = session.query(Subject).filter_by(id=subject_id).one()
     if request.method == 'POST':
         if request.form['name']:
             editedItem.name = request.form['name']
@@ -523,7 +563,7 @@ def editItem(subject_id, item_id):
             editedItem.priority = request.form['priority']
         session.add(editedItem)
         session.commit()
-        flash('\'%s\' successfully edited' % request.form['name'])
+        flash('\'%s\' successfully edited' % request.form['name'], 'success')
         return redirect(url_for('showItems', subject_id=subject_id))
     else:
         picture = login_session['picture']
@@ -541,13 +581,24 @@ def deleteItem(subject_id, item_id):
     """
     if 'username' not in login_session:
         return redirect('/login')
-    subject = session.query(Subject).filter_by(id=subject_id).one()
+
+    try:
+        subject = session.query(Subject).filter_by(id=subject_id).one()
+    except:
+        flash('No such subject is found.', 'error')
+        return redirect(url_for('showSubjects'))
+
+    if login_session['user_id'] != subject.user_id:
+        flash(
+            'You are not authorized to delete items of this subject.',
+            'error')
+        return redirect(url_for('showItems', subject_id=subject_id))
     itemToDelete = session.query(Item).filter_by(id=item_id).one()
     itemName = itemToDelete.name
     if request.method == 'POST':
         session.delete(itemToDelete)
         session.commit()
-        flash('\'%s\' successfully deleted' % itemName)
+        flash('\'%s\' successfully deleted' % itemName, 'success')
         return redirect(url_for('showItems', subject_id=subject_id))
     else:
         picture = login_session['picture']
