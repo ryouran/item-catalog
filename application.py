@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 
-"""Catalog Item Project.
-This module gets data from database and print out formatted results.
+"""Item Catalog Project
+This module does the following:
+initialize the app, connect to the database, manage user login and
+logout, handle routing, process data for web page views for CRUD
+operations, and provide JSON endpoints
 """
 
 import random
@@ -104,14 +107,12 @@ def gconnect():
     """
     Connect using Google API
     """
-    print "gconnect!"
     if request.args.get('state') != login_session['state']:
         response = make_response(json.dumps('Invalid state parameter'), 401)
         response.headers['Content-type'] = 'application/json'
         return response
     # one-time code
     auth_code = request.data
-    print "one time code received"
 
     """
     If this request does not have `X-Requested-With` header,
@@ -140,9 +141,7 @@ def gconnect():
         % access_token)
     h = httplib2.Http()
     result = json.loads(h.request(url, 'GET')[1])
-    print result
 
-    print 'access_token: %s' % access_token
     # If there was an error in the access token info, abort.
     if result.get('error') is not None:
         # Send Internal Server Error back
@@ -152,8 +151,7 @@ def gconnect():
 
     # Verify that the acsess token is used for the intended user.
     guser_id = credentials.id_token['sub']
-    print 'guser_id: %s' % guser_id
-    print 'login session guser %s' % login_session.get('guser_id')
+
     if result['user_id'] != guser_id:
         # Send Unauthorized status code back
         response = make_response(json.dumps(
@@ -187,7 +185,7 @@ def gconnect():
 
     # See if user exisits, if it doesn't, create a new user
     user_id = getUserID(login_session['email'])
-    print "%s returned with %s " % (user_id, login_session['email'])
+
     if user_id is None:
         user_id = createUser(login_session)
     login_session['user_id'] = user_id
@@ -226,7 +224,6 @@ def disconnect():
 
 @app.route('/gdisconnect')
 def gdisconnect():
-    print("gdisconnect")
     # Execute HTTP GET request to revoke current token
     access_token = login_session.get('access_token')
     if access_token is None:
@@ -237,7 +234,6 @@ def gdisconnect():
     h = httplib2.Http()
     result = h.request(url, 'GET')[0]
     if result['status'] == '200':
-        print ("successfuly disconnected")
         response = make_response(json.dumps('Successfully disconnected.'), 200)
         response.headers['Content-Type'] = 'application/json'
         return response
@@ -250,30 +246,25 @@ def gdisconnect():
 
 @app.route('/fbconnect', methods=['POST'])
 def fbconnect():
-    print 'fbconnect'
     if request.args.get('state') != login_session['state']:
         response = make_response(json.dumps('Invalid state parameter'), 401)
         response.headers['Content-Type'] = 'applicaiton/json'
         return response
     access_token = request.data
-    print "access_token %s" % access_token
 
     # Exchange short-lived access token for long-lived
     app_secret = json.loads(open(
         'fb_client_secrets.json', 'r').read())['web']['app_secret']
     app_id = json.loads(
         open('fb_client_secrets.json', 'r').read())['web']['app_id']
-    print 'appid %s' % app_id
-    print 'app_secret %s' % app_secret
+
     url = 'https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=%s' % (app_id, app_secret, access_token)  # noqa
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
-    print 'result %s' % result
     data = json.loads(result)
 
     # Store long-lived access token to login session
     if data.get('access_token') is not None:
-        print data.get('access_token')
         login_session['access_token'] = data.get('access_token')
 
     token = login_session.get('access_token')
@@ -282,7 +273,6 @@ def fbconnect():
     userinfo_url = 'https://graph.facebook.com/v2.12/me?access_token=%s&fields=name,id,email' % token  # noqa
     h = httplib2.Http()
     result = h.request(userinfo_url, 'GET')[1]
-    print 'user info result %s' % result
     data = json.loads(result)
     login_session['username'] = data['name']
     login_session['email'] = data['email']
@@ -293,16 +283,13 @@ def fbconnect():
     url = 'https://graph.facebook.com/v2.12/me/picture?access_token=%s&redirect=0&height=200&width=200' % token  # noqa
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
-    print 'picture result %s' % result
     data = json.loads(result)
 
     login_session['picture'] = data['data']['url']
 
     # See if user exists
     user_id = getUserID(login_session['email'])
-    print "user_id %s " % user_id
     if user_id is None:
-        print "########creat user now##########"
         user_id = createUser(login_session)
     login_session['user_id'] = user_id
 
