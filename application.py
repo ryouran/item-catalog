@@ -24,6 +24,7 @@ from oauth2client.client import FlowExchangeError
 from flask import make_response
 from apiclient import discovery
 from oauth2client import client
+from functools import wraps
 
 app = Flask(__name__)
 
@@ -335,6 +336,16 @@ def subjectsJSON():
     return jsonify(subjects=[s.serialize for s in subjects])
 
 
+def login_required(function):
+    @wraps(function)
+    def wrapper():
+        if 'username' in login_session:
+            function()
+        else:
+            return redirect('/login')
+    return wrapper
+
+
 @app.route('/')
 @app.route('/subject/')
 def showSubjects():
@@ -357,13 +368,11 @@ def showSubjects():
 
 
 @app.route('/subject/new/', methods=['GET', 'POST'])
+@login_required
 def newSubject():
     """
     Create a new subject
     """
-    if 'username' not in login_session:
-        return redirect('/login')
-
     picture = login_session['picture']
 
     if request.method == 'POST':
@@ -394,13 +403,11 @@ def newSubject():
 
 
 @app.route('/subject/<int:subject_id>/edit/', methods=['GET', 'POST'])
+@login_required
 def editSubject(subject_id):
     """
     Edit a subject
     """
-    if 'username' not in login_session:
-        return redirect('/login')
-
     try:
         editedSubject = session.query(Subject).filter_by(id=subject_id).one()
     except:
@@ -424,13 +431,11 @@ def editSubject(subject_id):
 
 
 @app.route('/subject/<int:subject_id>/delete/', methods=['GET', 'POST'])
+@login_required
 def deleteSubject(subject_id):
     """
     Delete a subject
     """
-    if 'username' not in login_session:
-        return redirect('/login')
-
     try:
         subjectToDelete = session.query(Subject).filter_by(id=subject_id).one()
     except:
@@ -482,12 +487,11 @@ def showItems(subject_id):
 
 
 @app.route('/subject/<int:subject_id>/item/new/', methods=['GET', 'POST'])
+@login_required
 def newItem(subject_id):
     """
     Create a new homework item
     """
-    if 'username' not in login_session:
-        return redirect('/login')
     try:
         subject = session.query(Subject).filter_by(id=subject_id).one()
     except:
@@ -521,13 +525,11 @@ def newItem(subject_id):
 @app.route(
     '/subject/<int:subject_id>/item/<int:item_id>/edit',
     methods=['GET', 'POST'])
+@login_required
 def editItem(subject_id, item_id):
     """
     Edit a homework item
     """
-    if 'username' not in login_session:
-        return redirect('/login')
-
     try:
         subject = session.query(Subject).filter_by(id=subject_id).one()
     except:
@@ -562,13 +564,11 @@ def editItem(subject_id, item_id):
 @app.route(
     '/subject/<int:subject_id>/item/<int:item_id>/delete',
     methods=['GET', 'POST'])
+@login_required
 def deleteItem(subject_id, item_id):
     """
     Delete a homework item
     """
-    if 'username' not in login_session:
-        return redirect('/login')
-
     try:
         subject = session.query(Subject).filter_by(id=subject_id).one()
     except:
