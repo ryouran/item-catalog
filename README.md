@@ -16,6 +16,9 @@ Users can view all subjects and homework items created without logging in, but t
   * [Flask 0.12.2](http://flask.pocoo.org/)
   * [Vagrant](https://www.vagrantup.com/)
   * [VirtualBox](https://www.virtualbox.org/)
+  * oauth2client
+  * httplib2
+  * requests
 
 ### Skills used for this project
   * Python
@@ -62,5 +65,3 @@ Catalog JSON: `/subject/JSON` - Show all subjects
 Category JSON: `/subject/<int:subject_id>/item/JSON` - Show items for a specific category
 
 Item JSON: `/subject/<int:subject_id>/item/<int:item_id>/JSON` - Show a specific item
-
-
