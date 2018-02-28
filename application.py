@@ -338,9 +338,9 @@ def subjectsJSON():
 
 def login_required(function):
     @wraps(function)
-    def wrapper():
+    def wrapper(*args, **kwargs):
         if 'username' in login_session:
-            function()
+            return function(*args, **kwargs)
         else:
             return redirect('/login')
     return wrapper
