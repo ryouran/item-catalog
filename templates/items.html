@@ -38,13 +38,13 @@
 </div>
 	<div class="row mt-3">
 		<div class="col-md-12">
-			<a href="{{url_for('editSubject', subject_id=subject.id)}}">
+			<a href="{{url_for('mod_views.editSubject', subject_id=subject.id)}}">
 				<button class="btn btn-sm btn-outline-primary" id="new-menu-item">
 					<i class="fas fa-pencil-alt"></i> Edit Subject
 				</button>
 			</a>
 		</a>
-		<a href="{{url_for('deleteSubject', subject_id=subject.id)}}">
+		<a href="{{url_for('mod_views.deleteSubject', subject_id=subject.id)}}">
 			<button class="btn btn-sm btn-outline-secondary" id="delete-subject">
 				<i class="far fa-trash-alt"></i> Delete Subject
 			</button>
@@ -55,7 +55,7 @@
 	{% if items ==[] %}	
 	<div class="row mt-3">
 		<div class="col-md-12"><p>No item is found</p></div>
-		<div class="col-md-12"><a href="{{url_for('newItem', subject_id=subject.id)}}">
+		<div class="col-md-12"><a href="{{url_for('mod_views.newItem', subject_id=subject.id)}}">
 			<button class="btn btn-sm btn-outline-primary" id="new-menu-item">
 				<i class="fas fa-plus"></i> Add Homework Item
 			</button>
@@ -66,7 +66,7 @@
 	{% if items !=[] %}	
 		<div class="row mt-3">
 			<div class="col-md-12">
-			<a href="{{url_for('newItem', subject_id=subject.id)}}">
+			<a href="{{url_for('mod_views.newItem', subject_id=subject.id)}}">
 				<button class="btn btn-sm btn-outline-primary" id="new-menu-item">
 					<i class="fas fa-plus"></i> Add Homework Item
 				</button>
@@ -83,10 +83,10 @@
 								<h3>{{i.name}}</h3>
 								<p>{{i.description}}</p>
 								<p>{{i.time_estimate}}</p>
-								<a href="{{url_for('editItem', subject_id=subject.id, item_id=i.id)}}" role="button">
+								<a href="{{url_for('mod_views.editItem', subject_id=subject.id, item_id=i.id)}}" role="button">
 										<i class="fas fa-pencil-alt"></i> Edit</a> | 
 									
-								<a href="{{url_for('deleteItem', subject_id=subject.id, item_id=i.id)}}" role="button">
+								<a href="{{url_for('mod_views.deleteItem', subject_id=subject.id, item_id=i.id)}}" role="button">
 										<i class="far fa-trash-alt"></i> Delete</i>
 								</a>
 							</div>
@@ -101,9 +101,9 @@
 							<h3>{{i.name}}</h3>
 							<p>{{i.description}}</p>
 							<p>{{i.time_estimate}}</p>
-							<a href="{{url_for('editItem', subject_id=subject.id, item_id=i.id)}}">
+							<a href="{{url_for('mod_views.editItem', subject_id=subject.id, item_id=i.id)}}">
 								<i class="fas fa-pencil-alt"></i> Edit</a> | 
-							<a href="{{url_for('deleteItem', subject_id=subject.id, item_id=i.id)}}">
+							<a href="{{url_for('mod_views.deleteItem', subject_id=subject.id, item_id=i.id)}}">
 								<i class="far fa-trash-alt"></i> Delete
 							</a>
 						</div>
@@ -118,9 +118,9 @@
 							<h3>{{i.name}}</h3>
 							<p>{{i.description}}</p>
 							<p>{{i.time_estimate}}</p>
-							<a href="{{url_for('editItem', subject_id=subject.id, item_id=i.id)}}">
+							<a href="{{url_for('mod_views.editItem', subject_id=subject.id, item_id=i.id)}}">
 								<i class="fas fa-pencil-alt"></i> Edit</a> | 
-							<a href="{{url_for('deleteItem', subject_id=subject.id, item_id=i.id)}}">
+							<a href="{{url_for('mod_views.deleteItem', subject_id=subject.id, item_id=i.id)}}">
 								<i class="far fa-trash-alt"></i> Delete
 							</a>
 						</div>

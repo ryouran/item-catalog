@@ -1,17 +1,17 @@
 		<header class="navbar row fixed-top bg-light-blue">
 			<div class="container-fluid">
 				<div class="col-7 bg-light-blue">
-					<a href = "{{url_for('showSubjects')}}">
+					<a href = "{{url_for('mod_views.showSubjects')}}">
 					<h1 class="bg-light-blue">Homework Tracker</h1>
 					</a>
 				</div>
 				<div class="col-5 text-right bg-light-blue">
 					{%if 'username' not in session %}
-					<a href="{{url_for('showLogin')}}"><i class="fas fa-sign-in-alt bg-light-blue"></i> Login</a>
+					<a href="{{url_for('mod_auth.showLogin')}}"><i class="fas fa-sign-in-alt bg-light-blue"></i> Login</a>
 					{% else %}
 					<figure class="user">
 						<img src="{{picture}}" class="user" alt="user">
-						<a href="{{url_for('disconnect')}}"><i class="fas fa-sign-out-alt bg-light-blue"></i> Logout</a>
+						<a href="{{url_for('mod_auth.disconnect')}}"><i class="fas fa-sign-out-alt bg-light-blue"></i> Logout</a>
 					</figure>
 					{% endif %}		
 				</div>

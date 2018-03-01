@@ -37,7 +37,7 @@
 			<div class="container">
 				<div class="row mt-3 mx-auto justify-content-start">				
 					<div class="col-md-4">
-						<a href="{{url_for('newSubject')}}">
+						<a href="{{url_for('mod_views.newSubject')}}">
 							<button class="btn btn-outline-primary btn-md mx-auto" id="new-subject"><i class="fas fa-plus"></i> Add Subject</button>
 						</a>
 					</div>
@@ -50,7 +50,7 @@
 							<div class="card-header">{{subject[1].name}}</div>	
 							<div class="card-body">
 								<div class="card-title">
-								<a href = "{{url_for('showItems', subject_id = subject[0].id)}}">{{subject[0].name}}</a>
+								<a href = "{{url_for('mod_views.showItems', subject_id = subject[0].id)}}">{{subject[0].name}}</a>
 								</div>
 							</div>
 							<div class="card-footer">
